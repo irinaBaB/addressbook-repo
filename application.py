@@ -1,34 +1,66 @@
-from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from contact import Contact
-import unittest
 
 
-class Test2(unittest.TestCase):
-    def setUp(self):
+class Application:
+    def __init__(self):
         self.wd = webdriver.Chrome(ChromeDriverManager().install())
         self.wd.implicitly_wait(30)
 
-
-    def test_case_adding_contact(self):
+    def logout(self):
         wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd)
-        self.open_contact_page(wd)
-        self.create_contact(wd, Contact(firstname="Petr", middlename="sergeevich", lastname="Ivanov", nickname="petya", address="2/3 Small street", homephone="089-56-67", mobilephone="997-89-706",
-                            email="petay@gmail.com", byear="1982", bmonth="April", bday="1"))
-        self.return_to_home_page(wd)
-        self.logout(wd)
-
-    def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
 
-    def return_to_home_page(self, wd):
+    def return_to_groups_page(self):
+        wd = self.wd
+        wd.find_element_by_link_text("groups").click()
+
+    def return_to_home_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("home").click()
         wd.get("http://localhost/addressbook/")
 
-    def create_contact(self, wd, contact):
+    def create_group(self, group):
+        wd = self.wd
+        self.open_groups_page()
+        # init group creation
+        wd.find_element_by_name("new").click()
+        # fill group form
+        wd.find_element_by_name("group_name").click()
+        wd.find_element_by_name("group_name").clear()
+        wd.find_element_by_name("group_name").send_keys(group.name)
+        wd.find_element_by_name("group_header").clear()
+        wd.find_element_by_name("group_header").send_keys(group.header)
+        wd.find_element_by_name("group_footer").click()
+        wd.find_element_by_name("group_footer").clear()
+        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        # submit group creation
+        wd.find_element_by_name("submit").click()
+        self.return_to_groups_page()
+
+    def open_groups_page(self):
+        wd = self.wd
+        wd.find_element_by_link_text("groups").click()
+        wd.get("http://localhost/addressbook/group.php")
+
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
+        wd.find_element_by_name("user").click()
+        wd.find_element_by_name("user").clear()
+        wd.find_element_by_name("user").send_keys(username)
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys(password)
+        wd.find_element_by_id("LoginForm").submit()
+
+    def open_home_page(self):
+        wd = self.wd
+        wd.get("http://localhost/addressbook/index.php")
+
+    def create_contact(self, contact):
+        wd = self.wd
+        self.open_contact_page()
         wd.get("http://localhost/addressbook/edit.php")
         wd.find_element_by_name("theform").click()
         wd.find_element_by_name("firstname").click()
@@ -68,24 +100,13 @@ class Test2(unittest.TestCase):
         wd.find_element_by_name("byear").send_keys(contact.byear)
         # submit the new contact
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.return_to_home_page()
 
-    def open_contact_page(self, wd):
+    def open_contact_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd):
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
-        wd.find_element_by_id("LoginForm").submit()
 
-    def open_home_page(self, wd):
-        wd.get("http://localhost/addressbook/index.php")
-
-    def tearDown(self):
+    def destroy(self):
         self.wd.quit()
 
-
-if __name__ == "__main__":
-    unittest.main()
