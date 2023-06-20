@@ -60,14 +60,16 @@ class ContactHelper:
 
     def update_contact_field_value(self, field_name, value):
         wd = self.app.wd
-        wd.find_element_by_name(field_name).click()
-        wd.find_element_by_name(field_name).clear()
-        wd.find_element_by_name(field_name).send_keys(value)
+        if value is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(value)
 
     def update_contact_by_select(self, field_name, value):
         wd = self.app.wd
-        wd.find_element_by_name(field_name).click()
-        Select(wd.find_element_by_name(field_name)).select_by_visible_text(value)
+        if value is not None:
+            wd.find_element_by_name(field_name).click()
+            Select(wd.find_element_by_name(field_name)).select_by_visible_text(value)
 
 
 
