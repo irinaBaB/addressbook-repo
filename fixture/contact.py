@@ -40,7 +40,8 @@ class ContactHelper:
 
     def open_contact_page(self):
         wd = self.app.wd
-        wd.get("http://localhost/addressbook/index.php")
+        if not (wd.current_url.endswith("/index.php")):
+            wd.get("http://localhost/addressbook/index.php")
 
     def modify_first(self, contact):
         wd = self.app.wd
