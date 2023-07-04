@@ -29,9 +29,12 @@ class GroupHelper:
         self.group_cache = None
 
     def delete_first_group(self):
+        self.delete_group_by_index(0)
+
+    def delete_group_by_index(self,index):
         wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
         self.group_cache = None
@@ -42,9 +45,12 @@ class GroupHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def modify_first_record(self, group):
+        self.modify_group_by_index(0, group)
+
+    def modify_group_by_index(self, index, group):
         wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         wd.find_element_by_name("edit").click()
         self.update_group_filed_value("group_name", group.name)
         self.update_group_filed_value("group_header", group.header)
@@ -56,6 +62,10 @@ class GroupHelper:
     def select_first_group(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
+
+    def select_group_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def update_group_filed_value(self, filed_name, value):
         wd = self.app.wd
@@ -76,3 +86,5 @@ class GroupHelper:
                 idg = element.find_element_by_name('selected[]').get_attribute("value")
                 self.group_cache.append(Group(name=text, idg=idg))
         return list(self.group_cache)
+
+

@@ -33,13 +33,20 @@ class ContactHelper:
         wd.find_element_by_link_text("add new").click()
 
     def delete_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_contact_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
         self.return_to_home_page()
         self.contact_cache = None
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def open_contact_page(self):
         wd = self.app.wd
@@ -47,9 +54,12 @@ class ContactHelper:
             wd.get("http://localhost/addressbook/index.php")
 
     def modify_first(self, contact):
+        self.modify_contact_by_index(0, contact)
+
+    def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.open_contact_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.filling_out_contact_details(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
