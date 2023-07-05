@@ -60,11 +60,17 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         self.select_contact_by_index(index)
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        self.click_to_edit_contact(index)
         self.filling_out_contact_details(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
         self.return_to_home_page()
         self.contact_cache = None
+
+    def click_to_edit_contact(self, index):
+        wd = self.app.wd
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name('a').click()
 
     def filling_out_contact_details(self, contact):
         self.update_contact_field_value("firstname", contact.firstname)
@@ -120,11 +126,8 @@ class ContactHelper:
         cell.find_element_by_tag_name('a').click()
 
     def open_contact_to_edit_by_index(self, index):
-        wd = self.app.wd
         self.open_contact_page()
-        row = wd.find_elements_by_name("entry")[index]
-        cell = row.find_elements_by_tag_name("td")[7]
-        cell.find_element_by_tag_name('a').click()
+        self.click_to_edit_contact(index)
 
     def get_info_from_edit_page(self, index):
         wd = self.app.wd
@@ -138,9 +141,7 @@ class ContactHelper:
         secondaryphone = wd.find_element_by_name('phone2').get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, idc=idc, homephone=homephone,
                        workphone=workphone, mobilephone=mobilephone, secondaryphone=secondaryphone)
-
-
-
+# WIP
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
         self.open_contact_view_by_index
