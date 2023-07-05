@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import Select
 from models.contact import Contact
+import re
 
 
 class ContactHelper:
@@ -112,10 +113,11 @@ class ContactHelper:
                 lastname = column[1].text
                 firstname = column[2].text
                 idc = column[0].find_element_by_name('selected[]').get_attribute("value")
-                allphones = column[5].text.splitlines()
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, idc=idc,
-                                                  homephone=allphones[0], mobilephone=allphones[1],
-                                                  workphone=allphones[2], secondaryphone=allphones[3]))
+                allphones = column[5].text
+                self.contact_cache.append(Contact(firstname=firstname,
+                                                  lastname=lastname,
+                                                  idc=idc,
+                                                  all_phones_from_home_page=allphones))
         return list(self.contact_cache)
 
     def open_contact_view_by_index(self, index):
@@ -139,12 +141,34 @@ class ContactHelper:
         workphone = wd.find_element_by_name('work').get_attribute("value")
         mobilephone = wd.find_element_by_name('mobile').get_attribute("value")
         secondaryphone = wd.find_element_by_name('phone2').get_attribute("value")
-        return Contact(firstname=firstname, lastname=lastname, idc=idc, homephone=homephone,
-                       workphone=workphone, mobilephone=mobilephone, secondaryphone=secondaryphone)
-# WIP
+        return Contact(firstname=firstname,
+                       lastname=lastname,
+                       idc=idc,
+                       homephone=homephone,
+                       workphone=workphone,
+                       mobilephone=mobilephone,
+                       secondaryphone=secondaryphone)
+
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
-        self.open_contact_view_by_index
+        self.open_contact_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        homephone = re.search("H: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return Contact(homephone=homephone,
+                       workphone=workphone,
+                       mobilephone=mobilephone,
+                       secondaryphone=secondaryphone)
+
+    def get_contact_info_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        return text
+
+
 
 
 
