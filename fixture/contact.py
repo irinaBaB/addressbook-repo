@@ -74,6 +74,8 @@ class ContactHelper:
         self.update_contact_field_value("address", contact.address)
         self.update_contact_field_value("home", contact.homephone)
         self.update_contact_field_value("mobile", contact.mobilephone)
+        self.update_contact_field_value("work", contact.workphone)
+        self.update_contact_field_value("phone2", contact.secondaryphone)
         self.update_contact_field_value("email", contact.email)
         self.update_contact_by_select("bday", contact.bday)
         self.update_contact_by_select("bmonth", contact.bmonth)
@@ -93,17 +95,58 @@ class ContactHelper:
             Select(wd.find_element_by_name(field_name)).select_by_visible_text(value)
 
     contact_cache = None
+
     def get_contact_list(self):
         if self.contact_cache is None:
             wd = self.app.wd
             self.open_contact_page()
             self.contact_cache = []
             for element in wd.find_elements_by_name("entry"):
-                rows = element.find_elements_by_tag_name("td")
-                lastname = rows[1].text
-                firstname = rows[2].text
-                idc = rows[0].find_element_by_name('selected[]').get_attribute("value")
-                self.contact_cache.append(Contact(firstname=firstname,lastname=lastname, idc=idc))
+                column = element.find_elements_by_tag_name("td")
+                lastname = column[1].text
+                firstname = column[2].text
+                idc = column[0].find_element_by_name('selected[]').get_attribute("value")
+                allphones = column[5].text.splitlines()
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, idc=idc,
+                                                  homephone=allphones[0], mobilephone=allphones[1],
+                                                  workphone=allphones[2], secondaryphone=allphones[3]))
         return list(self.contact_cache)
+
+    def open_contact_view_by_index(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[6]
+        cell.find_element_by_tag_name('a').click()
+
+    def open_contact_to_edit_by_index(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name('a').click()
+
+    def get_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_index(index)
+        firstname = wd.find_element_by_name('firstname').get_attribute("value")
+        lastname = wd.find_element_by_name('lastname').get_attribute("value")
+        idc = wd.find_element_by_name('id').get_attribute("value")
+        homephone = wd.find_element_by_name('home').get_attribute("value")
+        workphone = wd.find_element_by_name('work').get_attribute("value")
+        mobilephone = wd.find_element_by_name('mobile').get_attribute("value")
+        secondaryphone = wd.find_element_by_name('phone2').get_attribute("value")
+        return Contact(firstname=firstname, lastname=lastname, idc=idc, homephone=homephone,
+                       workphone=workphone, mobilephone=mobilephone, secondaryphone=secondaryphone)
+
+
+
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_view_by_index
+
+
+
+
 
 
