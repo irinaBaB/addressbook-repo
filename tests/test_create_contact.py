@@ -21,3 +21,13 @@ def test_case_create_contact_some_data(app):
     new_contacts = app.contact.get_contact_list()
     old_contacts.append(contact)
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+
+
+def test_case_create_contact_with_two_fields_only(app):
+    old_contacts = app.contact.get_contact_list()
+    contact = Contact(firstname="Petr", mobilephone="997-89-706")
+    app.contact.create(contact)
+    assert len(old_contacts) + 1 == app.contact.count()
+    new_contacts = app.contact.get_contact_list()
+    old_contacts.append(contact)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
