@@ -11,7 +11,7 @@ def randon_string(prefix, maxlen):
 
 
 test_data = [Group(name="", header="", footer="")] + [
-    Group(name=randon_string("name",8), header=randon_string("header", 7), footer=randon_string("footer",5))
+    Group(name=randon_string("name", 8), header=randon_string("header", 7), footer=randon_string("footer", 5))
     for i in range(3)]
 
 
