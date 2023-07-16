@@ -29,7 +29,7 @@ def test_case_modify_contact_mobile(app):
 def test_case_modify_contact_date_of_birth(app):
     if app.contact.count() == 0:
         app.contact.create((Contact(firstname="cheburashka")))
-    old_groups = app.group.get_group_list()
+    old_contacts = app.contact.get_contact_list()
     app.contact.modify_first(Contact(bmonth='February', bday='15', byear='1954'))
-    new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
+    new_contacts = app.contact.get_contact_list()
+    assert len(old_contacts) == len(new_contacts)

@@ -11,7 +11,7 @@ class ContactHelper:
     def return_to_home_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home").click()
-        wd.get("http://localhost/addressbook/")
+        self.app.open_home_page()
 
     def create(self, contact):
         wd = self.app.wd
@@ -52,7 +52,7 @@ class ContactHelper:
     def open_contact_page(self):
         wd = self.app.wd
         if not (wd.current_url.endswith("/index.php")):
-            wd.get("http://localhost/addressbook/index.php")
+            self.app.open_home_page()
 
     def modify_first(self, contact):
         self.modify_contact_by_index(0, contact)
