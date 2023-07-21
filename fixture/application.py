@@ -11,7 +11,7 @@ class Application:
     def __init__(self, browser, baseurl):
         if browser =='chrome':
             self.wd = webdriver.Chrome('/Users/irinapirandello/Documents/Courses/python-testing_course_rus/chromedriver')
-            #the way above stopped working
+            #the way below stopped working
             #self.wd = webdriver.Chrome(ChromeDriverManager().install())
         elif browser =='firefox':
             self.wd = webdriver.Firefox()
