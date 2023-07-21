@@ -1,4 +1,5 @@
-from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.chrome import ChromeDriverManager
+
 from selenium import webdriver
 
 from fixture.session import SessionHelper
@@ -9,7 +10,9 @@ from fixture.contact import ContactHelper
 class Application:
     def __init__(self, browser, baseurl):
         if browser =='chrome':
-            self.wd = webdriver.Chrome(ChromeDriverManager().install())
+            self.wd = webdriver.Chrome('/Users/irinapirandello/Documents/Courses/python-testing_course_rus/chromedriver')
+            #the way above stopped working
+            #self.wd = webdriver.Chrome(ChromeDriverManager().install())
         elif browser =='firefox':
             self.wd = webdriver.Firefox()
         else:

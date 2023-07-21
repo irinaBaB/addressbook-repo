@@ -4,41 +4,41 @@
         "name": "",
         "header": "",
         "footer": "",
-        "idg": null
+        "id": null
     },
     {
         "py/object": "models.group.Group",
         "name": "namefR",
         "header": "headera5Htht",
         "footer": "footerPr",
-        "idg": null
+        "id": null
     },
     {
         "py/object": "models.group.Group",
         "name": "name f6 4B",
         "header": "headerJbjCvU",
         "footer": "footer5p",
-        "idg": null
+        "id": null
     },
     {
         "py/object": "models.group.Group",
         "name": "name6H82",
         "header": "headersgN8",
         "footer": "footerZLM",
-        "idg": null
+        "id": null
     },
     {
         "py/object": "models.group.Group",
         "name": "name",
         "header": "headerA",
         "footer": "footerD",
-        "idg": null
+        "id": null
     },
     {
         "py/object": "models.group.Group",
         "name": "nameAu5Zw",
         "header": "header",
         "footer": "footerzO",
-        "idg": null
+        "id": null
     }
 ]

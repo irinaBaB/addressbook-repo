@@ -114,7 +114,7 @@ class ContactHelper:
                 firstname = column[2].text
                 id = column[0].find_element_by_name('selected[]').get_attribute("value")
                 address = column[3].text
-                email=column[4].text
+                email = column[4].text
                 allphones = column[5].text
                 self.contact_cache.append(Contact(firstname=firstname,
                                                   lastname=lastname,
@@ -122,7 +122,6 @@ class ContactHelper:
                                                   address=address,
                                                   email=email,
                                                   all_phones_from_home_page=allphones))
-
         return list(self.contact_cache)
 
     def open_contact_view_by_index(self, index):
