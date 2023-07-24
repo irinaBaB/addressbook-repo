@@ -84,7 +84,7 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         self.select_contact_by_id(id)
-        self.click_to_edit_contact_by_id()
+        self.click_to_edit_contact_by_id(id)
         self.filling_out_contact_details(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
         self.return_to_home_page()
@@ -96,10 +96,9 @@ class ContactHelper:
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name('a').click()
 
-    def click_to_edit_contact_by_id(self):
+    def click_to_edit_contact_by_id(self, id):
         wd = self.app.wd
-        cell = wd.find_elements_by_tag_name("td")[7]
-        cell.find_element_by_tag_name('a').click()
+        wd.find_element_by_css_selector('[href="edit.php?id='+id+'"]').click()
 
     def filling_out_contact_details(self, contact):
         self.update_contact_field_value("firstname", contact.firstname)
