@@ -1,4 +1,5 @@
 from models.group import Group
+from models.contact import Contact
 
 
 def test_group_list(app, db):
@@ -9,7 +10,9 @@ def test_group_list(app, db):
     assert sorted(ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max)
 
 
-
 #ex:21
-def test_contact_list(app,db):
-    pass
+def test_contact_list(app, db):
+    ui_list = app.contact.get_contact_list()
+    db_list = db.get_contact_list()
+    assert sorted(ui_list, key=Contact.id_or_max) == sorted(db_list, key=Contact.id_or_max)
+
