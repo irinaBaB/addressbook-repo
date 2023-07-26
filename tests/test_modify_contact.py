@@ -1,6 +1,6 @@
 from models.contact import Contact
 from random import randrange
-import random
+
 
 
 def test_case_modify_contact(app,db):
