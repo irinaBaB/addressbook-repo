@@ -40,7 +40,7 @@ def random_digits():
 
 test_data = [
              Contact(firstname=random_string("name",10), middlename=random_string("middlename",8), lastname=random_string('lastname',9), nickname=random_string('nickname',8), address=random_string("address",10), homephone=random_digits(), mobilephone=random_digits(),
-                               workphone=random_digits(), secondaryphone=random_digits(), email="petay@gmail.com", byear="1982", bmonth="April", bday="1")
+                               workphone=random_digits(), secondaryphone=random_digits(), email="petay@gmail.com", email2 = "test2@gmail.com", byear="1982", bmonth="April", bday="1")
              for i in range(n)
 
              # Contact(firstname=random_string("name", 10), address="2/3 Small street", homephone=random_digits(), mobilephone=random_digits(),
@@ -52,5 +52,5 @@ test_data = [
 file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f)
 
 with open(file, "w") as out:
-    jsonpickle.set_encoder_options("json",indent=4)
+    jsonpickle.set_encoder_options("json", indent=4)
     out.write(jsonpickle.encode(test_data))
