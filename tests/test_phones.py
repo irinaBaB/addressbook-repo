@@ -18,8 +18,8 @@ def test_contacts_from_db_check(app, db):
     #assert sorted(contact_from_home_page_db, key=Contact.id_or_max) == sorted(contact_from_home_page, key=Contact.id_or_max)
     print("*************")
     print(sorted(contact_from_home_page_db, key=Contact.id_or_max))
-    print("*************")
-    print(sorted(contact_from_home_page,key=Contact.id_or_max))
+    # print("*************")
+    # print(sorted(contact_from_home_page,key=Contact.id_or_max))
 
 
 #WIP
