@@ -54,6 +54,18 @@ class ContactHelper:
         self.return_to_home_page()
         self.contact_cache = None
 
+    def delete_contact_from_group(self, group, id):
+        wd = self.app.wd
+        self.open_contact_page()
+        wd.find_element_by_name("group").click()
+        Select(wd.find_element_by_name("group")).select_by_visible_text(group)
+        self.select_contact_by_id(id)
+        wd.find_element_by_name("remove").click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
+
+
     def select_contact_by_id(self, id):
         wd = self.app.wd
         wd.find_element_by_css_selector("input[value='%s']" % id).click()
@@ -116,6 +128,7 @@ class ContactHelper:
         self.update_contact_by_select("bday", contact.bday)
         self.update_contact_by_select("bmonth", contact.bmonth)
         self.update_contact_field_value("byear", contact.byear)
+        self.update_contact_by_select("new_group", contact.group_name)
 
     def update_contact_field_value(self, field_name, value):
         wd = self.app.wd
