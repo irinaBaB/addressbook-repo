@@ -32,7 +32,7 @@ def test_case_adding_existing_contact_to_the_group(app,db):
 
 
 def test_case_delete_contact_from_the_group(app,db):
-    old_contacts = db.get_contact_list()
+    old_contacts = db.get_contacts_in_group_list()
     contact = random.choice(old_contacts)
     app.contact.delete_contact_from_group(group_name, contact.id)
     new_contacts = db.get_contacts_in_group_list()
