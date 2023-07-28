@@ -64,6 +64,16 @@ class ContactHelper:
         self.return_to_home_page()
         self.contact_cache = None
 
+    def add_contact_to_group(self, group, id):
+        wd = self.app.wd
+        self.open_contact_page()
+        wd.find_element_by_id(id).click()
+        #self.select_contact_by_id(id)
+        wd.find_element_by_name("to_group").click()
+        Select(wd.find_element_by_name("to_group")).select_by_visible_text(group)
+        wd.find_element_by_name("add").click()
+        self.return_to_home_page()
+        self.contact_cache = None
 
 
     def select_contact_by_id(self, id):
