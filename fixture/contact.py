@@ -68,7 +68,6 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         wd.find_element_by_id(id).click()
-        #self.select_contact_by_id(id)
         wd.find_element_by_name("to_group").click()
         Select(wd.find_element_by_name("to_group")).select_by_visible_text(group)
         wd.find_element_by_name("add").click()
