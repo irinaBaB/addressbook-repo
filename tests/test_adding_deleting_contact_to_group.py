@@ -19,6 +19,8 @@ def test_case_adding_contact_to_group_on_create(app, db):
 
 
 def test_case_adding_existing_contact_to_the_group(app,db):
+    if len(db.get_contact_list()) == 0:
+        app.contact.create((Contact(firstname="cheburashka")))
     if len(db.get_group_name(group_name)) == 0:
         app.group.create((Group(name=group_name)))
     random_group = (random.choice(db.get_group_list()))
