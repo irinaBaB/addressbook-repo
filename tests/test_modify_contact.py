@@ -5,7 +5,7 @@ from random import randrange
 
 def test_case_modify_contact(app,db):
     if len(db.get_contact_list()) == 0:
-        app.contact.create((Contact(firstname="cheburashka")))
+        app.contact.create(Contact(firstname="cheburashka",lastname="different-gena"))
     old_contacts = db.get_contact_list()
     index = randrange(len(old_contacts))
     contact_field = Contact(firstname="Nadia", lastname="Stopper")

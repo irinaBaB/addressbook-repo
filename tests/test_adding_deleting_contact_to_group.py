@@ -5,6 +5,7 @@ from fixture.orm import ORMFixture
 
 orm = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 group_name = "special_group"
+contact_to_create = Contact(firstname="cheburashka", lastname="gena", email="gena-cheburashka@family.com")
 
 
 def test_case_adding_contact_to_group_on_create(app, db):
@@ -20,11 +21,15 @@ def test_case_adding_contact_to_group_on_create(app, db):
 
 def test_case_adding_existing_contact_to_the_group(app,db):
     if len(db.get_contact_list()) == 0:
-        app.contact.create((Contact(firstname="cheburashka")))
+        app.contact.create(contact_to_create)
     if len(db.get_group_name(group_name)) == 0:
-        app.group.create((Group(name=group_name)))
+        app.group.create(Group(name=group_name))
     random_group = (random.choice(db.get_group_list()))
+    if len(orm.get_contacts_not_in_group(Group(id=random_group.id))) == 0:
+        app.contact.create(contact_to_create)
     contact = random.choice(orm.get_contacts_not_in_group(Group(id=random_group.id)))
+    if len(orm.get_contacts_in_group(Group(id=random_group.id))) == 0:
+        app.contact.add_contact_to_group(random_group.name, contact.id)
     old_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
     app.contact.add_contact_to_group(random_group.name, contact.id)
     new_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
