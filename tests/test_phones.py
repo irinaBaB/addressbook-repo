@@ -2,8 +2,8 @@ import re
 from models.contact import Contact
 
 def test_phones_and_contacts_on_home_page(app):
-    contact_from_home_page = app.contact.get_contact_list()[5]
-    contact_from_edit_page = app.contact.get_info_from_edit_page(5)
+    contact_from_home_page = app.contact.get_contact_list()[0]
+    contact_from_edit_page = app.contact.get_info_from_edit_page(0)
     assert contact_from_home_page.firstname == contact_from_edit_page.firstname
     assert contact_from_home_page.lastname == contact_from_edit_page.lastname
     assert contact_from_home_page.address == contact_from_edit_page.address
@@ -37,6 +37,10 @@ def clear(p):
     return re.sub("[() -]", "", p)
 
 
+def clear_email_spaces(p):
+    return re.sub(" ", "", p)
+
+
 def merge_phones_like_on_home_page(contact):
     return "\n".join(filter(lambda x: x != "",
                             map(lambda x: clear(x),
@@ -49,7 +53,7 @@ def merge_phones_like_on_home_page(contact):
 
 def merge_emails_to_verify_with_home_page(contact):
     return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear(x),
+                            map(lambda x: clear_email_spaces(x),
                                 filter(lambda x: x is not None, [
                                     contact.email,
                                     contact.email2,
@@ -58,7 +62,7 @@ def merge_emails_to_verify_with_home_page(contact):
 
 def emails_cleaning(email):
     return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear(x),
+                            map(lambda x: clear_email_spaces(x),
                                 filter(lambda x: x is not None, [email]))))
 
 
