@@ -13,12 +13,17 @@ def test_phones_and_contacts_on_home_page(app):
 
 #ex:21
 def test_contacts_from_db_check(app, db):
-    contact_from_home_page_db = db.get_contact_list()
-    contact_from_home_page = app.contact.get_contact_list()
-    print()
-    assert sorted(contact_from_home_page_db, key=Contact.id_or_max) == sorted(contact_from_home_page, key=Contact.id_or_max)
-
-
+    contact_from_home_page_db = sorted(db.get_contact_list(), key=Contact.id_or_max)
+    contact_from_home_page = sorted(app.contact.get_contact_list(), key=Contact.id_or_max)
+    assert len(contact_from_home_page_db) == len(contact_from_home_page)
+    for index in range(len(contact_from_home_page)):
+        assert contact_from_home_page[index].firstname == contact_from_home_page_db[index].firstname
+        assert contact_from_home_page[index].lastname == contact_from_home_page_db[index].lastname
+        assert contact_from_home_page[index].address == contact_from_home_page_db[index].address
+        assert emails_cleaning(contact_from_home_page[index].email) == \
+               merge_emails_to_verify_with_home_page(contact_from_home_page_db[index])
+        assert contact_from_home_page[index].all_phones_from_home_page == \
+               merge_phones_like_on_home_page(contact_from_home_page_db[index])
 
 #WIP
 # def test_phones_on_contact_view_page(app):
