@@ -27,22 +27,20 @@ def test_case_adding_existing_contact_to_the_group(app,db):
     if len(orm.get_contacts_not_in_group(Group(id=random_group.id))) == 0:
         app.contact.create(contact_to_create)
     contact = random.choice(orm.get_contacts_not_in_group(Group(id=random_group.id)))
-    #this is a case when no contacts and groups exist
+
+    old_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
+    app.contact.add_contact_to_group(random_group.name, contact.id)
+    new_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
+    # this is a case when no contacts and groups exist
     if len(orm.get_contacts_in_group(Group(id=random_group.id))) == 0:
-        app.contact.add_contact_to_group(random_group.name, contact.id)
-        old_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
-        app.contact.add_contact_to_group(random_group.name, contact.id)
-        new_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
         assert len(old_contacts_in_groups) == len(new_contacts_in_groups)
         old_contacts_in_groups == new_contacts_in_groups
-    #case of some contacts and groups exist
-    elif len(orm.get_contacts_in_group(Group(id=random_group.id))) > 0:
-        old_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
-        app.contact.add_contact_to_group(random_group.name, contact.id)
-        new_contacts_in_groups = orm.get_contacts_in_group(Group(id=random_group.id))
-        assert len(old_contacts_in_groups)+1 == len(new_contacts_in_groups)
+    # case of some contacts and groups exist
+    if len(orm.get_contacts_in_group(Group(id=random_group.id))) > 0:
+        assert len(old_contacts_in_groups) + 1 == len(new_contacts_in_groups)
         old_contacts_in_groups.append(contact)
         assert sorted(old_contacts_in_groups, key=Contact.id_or_max) == sorted(new_contacts_in_groups, key=Contact.id_or_max)
+
 
 
 def test_case_delete_contact_from_the_group(app,db):
